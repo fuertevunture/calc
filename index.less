@@ -19,12 +19,33 @@ button {
 
 //主题样式
 :root {
+  --theme-bg-color: rgb(240, 242, 245);
+  --theme-body-color: white;
+  --theme-num-color: rgb(45, 45, 45);
+  --theme-compute-color: rgb(123, 157, 255);
+  --theme-control-color: rgb(255, 143, 158);
+  --theme-result-color: #3a0ca3;
+  --theme-text-color: black;
 }
 
 .dark-theme-color {
+  --theme-bg-color: rgb(18, 18, 18);
+  --theme-body-color: rgb(30, 30, 30);
+  --theme-num-color: rgb(45, 45, 45);
+  --theme-compute-color: rgb(123, 157, 255);
+  --theme-control-color: rgb(255, 143, 158);
+  --theme-result-color: #3a0ca3;
+  --theme-text-color: white;
 }
 
 .light-theme-color {
+  --theme-bg-color: rgb(240, 242, 245);
+  --theme-body-color: white;
+  --theme-num-color: rgb(45, 45, 45);
+  --theme-compute-color: rgb(123, 157, 255);
+  --theme-control-color: rgb(255, 143, 158);
+  --theme-result-color: #3a0ca3;
+  --theme-text-color: black;
 }
 
 //布局
@@ -37,9 +58,11 @@ body {
   width: 100%;
   min-height: 100vh;
   margin: 0;
-  background: #f6f6f6;
+  background: var(--theme-bg-color);
 
   overflow-x: hidden;
+
+  color: var(--theme-text-color);
 }
 
 .calc {
@@ -49,11 +72,12 @@ body {
   justify-content: flex-start;
   align-items: center;
   gap: 10px;
-  width: 50%;
+  width: clamp(400px, 50%, 75vh);
   height: 75vh;
   border-radius: 12px;
-  border: 1px solid white;
-  background: white;
+  border: 1px solid var(--theme-body-color);
+  background: var(--theme-body-color);
+  box-shadow: 0 0 6px 2px #ddd;
   transition: all 0.2s ease-in-out;
 }
 
@@ -72,7 +96,7 @@ body {
   width: 180px;
   height: 75vh;
   border-radius: 12px;
-  background: white;
+  background: var(--theme-body-color);
   transition: all 0.3s ease-in-out;
 }
 
@@ -113,11 +137,17 @@ body {
   cursor: pointer;
 }
 
-.calc-menu-control-theme-dark,
-.calc-menu-control-theme-light {
+.calc-menu-control-theme-mode {
+  display: block;
+}
+
+.hidden_calc-menu-control-theme-mode {
   display: none;
 }
 
-.selected_calc-menu-control-theme {
-  display: block;
+//媒体响应式
+@media all and (max-width: 600px) {
+  .calc-history {
+    display: none;
+  }
 }

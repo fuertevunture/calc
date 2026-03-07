@@ -13,6 +13,33 @@ button {
   outline: none;
   background: none;
 }
+:root {
+  --theme-bg-color: #f0f2f5;
+  --theme-body-color: white;
+  --theme-num-color: #2d2d2d;
+  --theme-compute-color: #7b9dff;
+  --theme-control-color: #ff8f9e;
+  --theme-result-color: #3a0ca3;
+  --theme-text-color: black;
+}
+.dark-theme-color {
+  --theme-bg-color: #121212;
+  --theme-body-color: #1e1e1e;
+  --theme-num-color: #2d2d2d;
+  --theme-compute-color: #7b9dff;
+  --theme-control-color: #ff8f9e;
+  --theme-result-color: #3a0ca3;
+  --theme-text-color: white;
+}
+.light-theme-color {
+  --theme-bg-color: #f0f2f5;
+  --theme-body-color: white;
+  --theme-num-color: #2d2d2d;
+  --theme-compute-color: #7b9dff;
+  --theme-control-color: #ff8f9e;
+  --theme-result-color: #3a0ca3;
+  --theme-text-color: black;
+}
 body {
   display: flex;
   flex-direction: column;
@@ -21,8 +48,9 @@ body {
   width: 100%;
   min-height: 100vh;
   margin: 0;
-  background: #f6f6f6;
+  background: var(--theme-bg-color);
   overflow-x: hidden;
+  color: var(--theme-text-color);
 }
 .calc {
   position: relative;
@@ -31,11 +59,12 @@ body {
   justify-content: flex-start;
   align-items: center;
   gap: 10px;
-  width: 50%;
+  width: clamp(400px, 50%, 75vh);
   height: 75vh;
   border-radius: 12px;
-  border: 1px solid white;
-  background: white;
+  border: 1px solid var(--theme-body-color);
+  background: var(--theme-body-color);
+  box-shadow: 0 0 6px 2px #ddd;
   transition: all 0.2s ease-in-out;
 }
 .calc:has(.showed_calc-history) {
@@ -52,7 +81,7 @@ body {
   width: 180px;
   height: 75vh;
   border-radius: 12px;
-  background: white;
+  background: var(--theme-body-color);
   transition: all 0.3s ease-in-out;
 }
 .showed_calc-history {
@@ -86,11 +115,15 @@ body {
   background: #f1f1f1;
   cursor: pointer;
 }
-.calc-menu-control-theme-dark,
-.calc-menu-control-theme-light {
+.calc-menu-control-theme-mode {
+  display: block;
+}
+.hidden_calc-menu-control-theme-mode {
   display: none;
 }
-.selected_calc-menu-control-theme {
-  display: block;
+@media all and (max-width: 600px) {
+  .calc-history {
+    display: none;
+  }
 }
 /*# sourceMappingURL=index.css.map */

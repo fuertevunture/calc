@@ -13,12 +13,19 @@
       <section class="calc-menu">
         <div class="calc-menu-title">KUN Calc</div>
         <div class="calc-menu-control">
-          <button class="calc-menu-control-history"></button>
-          <button class="calc-menu-control-theme">
+          <button
+            class="calc-menu-control-history"
+            title="显示计算历史"
+          ></button>
+          <button class="calc-menu-control-theme" title="切换主题样式">
             <div
-              class="calc-menu-control-theme-dark selected_calc-menu-control-theme"
+              class="calc-menu-control-theme-mode calc-menu-control-theme-mode-dark"
+              data-theme="dark"
             ></div>
-            <div class="calc-menu-control-theme-light"></div>
+            <div
+              class="calc-menu-control-theme-mode calc-menu-control-theme-mode-light hidden_calc-menu-control-theme-mode"
+              data-theme="light"
+            ></div>
           </button>
         </div>
       </section>
