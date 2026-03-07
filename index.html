@@ -6,21 +6,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>calcu</title>
     <link rel="stylesheet" type="text/css" href="index.css" />
-    <script type="application/javascript" src="index.ts" defer></script>
+    <script src="index.ts" defer></script>
   </head>
   <body>
     <main class="calc">
       <section class="calc-menu">
-        <div class="calc-menu-title"></div>
+        <div class="calc-menu-title">KUN Calc</div>
         <div class="calc-menu-control">
           <button class="calc-menu-control-history"></button>
-          <button class="calc-menu-control-theme"></button>
+          <button class="calc-menu-control-theme">
+            <div
+              class="calc-menu-control-theme-dark selected_calc-menu-control-theme"
+            ></div>
+            <div class="calc-menu-control-theme-light"></div>
+          </button>
         </div>
       </section>
-      <section class="calc-screen"></section>
-      <section class="calc-manipulate"></section>
+      <section class="calc-screen">
+        <div class="calc-screen-process"></div>
+        <div class="calc-screen-current"></div>
+      </section>
+      <section class="calc-mani"></section>
+      <aside class="calc-history"></aside>
     </main>
-    <aside class="history"></aside>
+
     <footer class="footer">Created with kun</footer>
   </body>
 </html>
