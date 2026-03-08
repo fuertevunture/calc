@@ -12,31 +12,34 @@ button {
   border: none;
   outline: none;
   background: none;
+  cursor: pointer;
 }
 :root {
   --theme-bg-color: #f0f2f5;
   --theme-body-color: white;
   --theme-num-color: #2d2d2d;
   --theme-compute-color: #7b9dff;
-  --theme-control-color: #ff8f9e;
+  --theme-deal-color: #ff8f9e;
   --theme-result-color: #3a0ca3;
   --theme-text-color: black;
 }
 .dark-theme-color {
   --theme-bg-color: #121212;
   --theme-body-color: #1e1e1e;
+  --theme-screen-color: #bcbdbe;
   --theme-num-color: #2d2d2d;
   --theme-compute-color: #7b9dff;
-  --theme-control-color: #ff8f9e;
+  --theme-deal-color: #ff8f9e;
   --theme-result-color: #3a0ca3;
   --theme-text-color: white;
 }
 .light-theme-color {
   --theme-bg-color: #f0f2f5;
   --theme-body-color: white;
+  --theme-screen-color: #f1f2f3;
   --theme-num-color: #2d2d2d;
   --theme-compute-color: #7b9dff;
-  --theme-control-color: #ff8f9e;
+  --theme-deal-color: #ff8f9e;
   --theme-result-color: #3a0ca3;
   --theme-text-color: black;
 }
@@ -78,7 +81,7 @@ body {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  width: 180px;
+  width: 200px;
   height: 75vh;
   border-radius: 12px;
   background: var(--theme-body-color);
@@ -120,6 +123,162 @@ body {
 }
 .hidden_calc-menu-control-theme-mode {
   display: none;
+}
+.calc-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-end;
+  gap: 12px;
+  width: 90%;
+  height: 22%;
+  padding: 10px;
+  border-radius: 12px;
+  background: var(--theme-screen-color);
+  box-shadow: inset 0 1px 6px 2px #eee;
+}
+.calc-screen-process {
+  width: auto;
+  max-width: 90%;
+  overflow-x: scroll;
+  scrollbar-width: none;
+  height: 25%;
+  color: #aaa;
+  font-size: 20px;
+}
+.calc-screen-current {
+  width: auto;
+  max-width: 90%;
+  overflow-x: scroll;
+  scrollbar-width: none;
+  height: 50%;
+  color: var(--theme-text-color);
+  font-size: 48px;
+  font-weight: bold;
+}
+.calc-mani {
+  flex-grow: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: repeat(5, 1fr);
+  grid-template-areas: "ac del percent divide" "seven eight nine multiply" "four five six subtract" "one two three add" "not zero point equal";
+  align-items: center;
+  justify-items: center;
+  width: 90%;
+  height: 55%;
+  margin-bottom: 20px;
+}
+.zero {
+  grid-area: zero;
+}
+.one {
+  grid-area: one;
+}
+.two {
+  grid-area: two;
+}
+.three {
+  grid-area: three;
+}
+.four {
+  grid-area: four;
+}
+.five {
+  grid-area: five;
+}
+.six {
+  grid-area: six;
+}
+.seven {
+  grid-area: seven;
+}
+.eight {
+  grid-area: eight;
+}
+.nine {
+  grid-area: nine;
+}
+.ac {
+  grid-area: ac;
+}
+.del {
+  grid-area: del;
+}
+.percent {
+  grid-area: percent;
+}
+.divide {
+  grid-area: divide;
+}
+.multiply {
+  grid-area: multiply;
+}
+.subtract {
+  grid-area: subtract;
+}
+.add {
+  grid-area: add;
+}
+.equal {
+  grid-area: equal;
+}
+.point {
+  grid-area: point;
+}
+.not {
+  grid-area: not;
+}
+.calc-mani-num,
+.calc-mani-compute,
+.calc-mani-deal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 24px;
+}
+.calc-mani-num {
+  background: var(--theme-body-color);
+  box-shadow: 1px 3px 4px 1px #ddd;
+}
+.calc-mani-compute {
+  color: #4361ee;
+  background: #f1f5fd;
+  box-shadow: 1px 3px 4px 1px #ddd;
+}
+.calc-mani-deal {
+  color: #e63946;
+  background: #fff4f0;
+  box-shadow: 1px 3px 4px 1px #ddd;
+}
+.calc-history-control {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+  height: 10%;
+  border-bottom: 1px solid #eee;
+  font-size: 16px;
+}
+.calc-history-record {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+.calc-history-record-void {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 80px;
+  font-size: 16px;
 }
 @media all and (max-width: 600px) {
   .calc-history {

@@ -32,6 +32,71 @@ calcMenuControlThemeModeLightDom.prepend(
   calcMenuControlThemeModeLightSvgDom.content,
 );
 
+const calcHistoryControlClearDom = document.querySelector(
+  ".calc-history-control-clear",
+);
+const calcHistoryControlClearSvgDom = document.createElement("template");
+calcHistoryControlClearSvgDom.innerHTML = `<svg t="1772931648518" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="45087" width="24" height="24"><path d="M426.667 384a42.667 42.667 0 0 1 42.666 42.667v426.666a42.667 42.667 0 1 1-85.333 0V426.667A42.667 42.667 0 0 1 426.667 384z m170.666 0A42.667 42.667 0 0 1 640 426.667v426.666a42.667 42.667 0 1 1-85.333 0V426.667A42.667 42.667 0 0 1 597.333 384zM291.243 85.333v85.334h441.514V85.333z m-85.334 85.334V85.333A85.333 85.333 0 0 1 291.243 0h441.514a85.333 85.333 0 0 1 85.334 85.333v85.334h120.576a42.667 42.667 0 1 1 0 85.333H85.333a42.667 42.667 0 0 1 0-85.333z m7.424 170.666A42.667 42.667 0 0 1 256 384v512a42.667 42.667 0 0 0 42.667 42.667h426.666A42.667 42.667 0 0 0 768 896V384a42.667 42.667 0 1 1 85.333 0v512a128 128 0 0 1-128 128H298.667a128 128 0 0 1-128-128V384a42.667 42.667 0 0 1 42.666-42.667z" p-id="45088"></path></svg>`;
+calcHistoryControlClearDom.prepend(calcHistoryControlClearSvgDom.content);
+
+const calcManiDom = document.querySelector(".calc-mani");
+
+// 数据管理
+
+const numList = [
+  ["zero", 0],
+  ["one", 1],
+  ["two", 2],
+  ["three", 3],
+  ["four", 4],
+  ["five", 5],
+  ["six", 6],
+  ["seven", 7],
+  ["eight", 8],
+  ["nine", 9],
+  ["point", "."],
+];
+
+const computeList = [
+  ["percent", "%"],
+  ["divide", "/"],
+  ["multiply", "x"],
+  ["subtract", "-"],
+  ["add", "+"],
+];
+
+const dealList = [
+  ["ac", "AC"],
+  ["del", "DEL"],
+  ["not", "±"],
+  ["equal", "="],
+];
+
+const maniFragment = document.createDocumentFragment();
+
+numList.forEach((num) => {
+  const numDiv = document.createElement("div");
+  numDiv.className = `calc-mani-num ${num[0]}`;
+  numDiv.textContent = String(num[1]);
+  maniFragment.appendChild(numDiv);
+});
+
+computeList.forEach((compute) => {
+  const computeDiv = document.createElement("div");
+  computeDiv.className = `calc-mani-compute ${compute[0]}`;
+  computeDiv.textContent = compute[1];
+  maniFragment.appendChild(computeDiv);
+});
+
+dealList.forEach((deal) => {
+  const dealDiv = document.createElement("div");
+  dealDiv.className = `calc-mani-deal ${deal[0]}`;
+  dealDiv.textContent = deal[1];
+  maniFragment.appendChild(dealDiv);
+});
+
+calcManiDom.prepend(maniFragment);
+
 //控制计算历史的显示
 const calcHistoryDom = document.querySelector(".calc-history");
 
