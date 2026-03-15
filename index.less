@@ -321,6 +321,10 @@ body {
 }
 
 //历史记录区域
+.calc-history {
+  background: #fafafa;
+}
+
 .calc-history-control {
   display: flex;
   flex-direction: row;
@@ -337,17 +341,42 @@ body {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  gap: 12px;
   width: 100%;
   height: 100%;
+  padding: 20px 0;
+  overflow: scroll;
+  scrollbar-width: none;
 }
 
 .calc-history-record-void {
-  display: flex;
+  display:flex;
   justify-content: center;
   align-items: center;
   width: 100%;
   height: 80px;
   font-size: 16px;
+}
+
+.calc-history-record-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 90%;
+  height: 90px;
+  border-radius: 10px;
+  padding: 10px;
+  background: white;
+}
+
+.calc-history-record-item-process {
+  font-size: 16px;
+  color: #999;
+}
+
+.calc-history-record-item-result {
+  font-size: 24px;
+  font-weight: bold;
 }
 
 //隔离

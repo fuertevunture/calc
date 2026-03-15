@@ -49,27 +49,42 @@ calcHistoryControlClearSvgDom.innerHTML = `<svg t="1772931648518" class="icon" v
 calcHistoryControlClearDom.prepend(calcHistoryControlClearSvgDom.content);
 
 // 数据管理
+const historyComputeList = JSON.parse(localStorage.getItem("history")) ?? [];
+
+const historyComputeListProxy = new Proxy(historyComputeList, {
+  set(target, prop, value) {
+    Reflect.set(...arguments);
+    renderHistoryRecord();
+    saveHistoryComputeRecord();
+    return true;
+  },
+});
+
+function saveHistoryComputeRecord() {
+  localStorage.setItem("history", JSON.stringify(historyComputeList));
+}
+
 const processList = [
   {
     val: "0",
     type: "num",
   },
-  {
-    val: "+",
-    type: "compute",
-  },
-  {
-    val: "0",
-    type: "num",
-  },
-  {
-    val: "=",
-    type: "deal",
-  },
-  {
-    val: "0",
-    type: "num",
-  },
+  // {
+  //   val: "+",
+  //   type: "compute",
+  // },
+  // {
+  //   val: "0",
+  //   type: "num",
+  // },
+  // {
+  //   val: "=",
+  //   type: "deal",
+  // },
+  // {
+  //   val: "0",
+  //   type: "num",
+  // },
 ];
 
 const processListProxy = new Proxy(processList, {
@@ -236,8 +251,14 @@ equalDealDom.addEventListener("click", (e) => {
   const computeCommand = processList.map((item) => item.val).join(" ");
   // 利用eval执行计算过程
   eval("currentProxy.value =" + computeCommand);
+  const historyCompute = {
+    process: computeCommand,
+    result: currentProxy.value,
+  };
+  historyComputeListProxy.push(historyCompute);
   computeProcessManage("=", "deal");
-  computeProcessManage(String(currentProxy.value), "num");
+  processList.length = 0;
+  processList.push({ val: String(currentProxy.value), type: "num" });
 });
 
 // 数字按钮的输入控制
@@ -288,8 +309,9 @@ calcManiComputeDomList.forEach((compute) => {
 
 function computeProcessManage(item, type) {
   if (
-    (processList.length === 0 && type !== "compute") ||
-    processList.map((item) => item.val).includes("=")
+    processList.length === 0 &&
+    type !== "compute"
+    // processList.map((item) => item.val).includes("=")
   ) {
     processListProxy.length = 0;
     processListProxy.push({ val: item, type });
@@ -306,6 +328,43 @@ const calcHistoryDom = document.querySelector(".calc-history");
 
 calcMenuControlHistoryDom.addEventListener("click", (e) => {
   calcHistoryDom.classList.toggle("showed_calc-history");
+});
+
+// 历史卡片中的内容
+const calcHistoryRecordDom = document.querySelector(".calc-history-record");
+const calcHistoryRecordVoidDom = document.querySelector(
+  ".calc-history-record-oid",
+);
+
+function renderHistoryRecord() {
+  calcHistoryRecordDom.innerHTML = "";
+
+  if (historyComputeList.length === 0) {
+    calcHistoryRecordDom.innerHTML = `
+          <div class="calc-history-record-void">No calculations yet.</div>
+   
+    `;
+  } else {
+    const historyComputeFrag = document.createDocumentFragment();
+
+    historyComputeList.forEach((history) => {
+      const div = document.createElement("div");
+      div.className = "calc-history-record-item";
+      div.innerHTML = `
+    <div class="calc-history-record-item-process">${history.process}</div>
+    <div class="calc-history-record-item-result">${history.result}</div>      
+  `;
+      historyComputeFrag.appendChild(div);
+    });
+
+    calcHistoryRecordDom.append(historyComputeFrag);
+  }
+}
+
+renderHistoryRecord();
+
+calcHistoryControlClearDom.addEventListener("click", (e) => {
+  historyComputeListProxy.length = 0;
 });
 
 /**
