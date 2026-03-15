@@ -49,7 +49,28 @@ calcHistoryControlClearSvgDom.innerHTML = `<svg t="1772931648518" class="icon" v
 calcHistoryControlClearDom.prepend(calcHistoryControlClearSvgDom.content);
 
 // 数据管理
-const processList = ["0", "+", "0", "=", "0"];
+const processList = [
+  {
+    val: "0",
+    type: "num",
+  },
+  {
+    val: "+",
+    type: "compute",
+  },
+  {
+    val: "0",
+    type: "num",
+  },
+  {
+    val: "=",
+    type: "compute",
+  },
+  {
+    val: "0",
+    type: "num",
+  },
+];
 
 const processListProxy = new Proxy(processList, {
   set(target, prop, value, receiver) {
@@ -67,7 +88,7 @@ const processListProxy = new Proxy(processList, {
 // 因current需要显示小数状态，所以要以字符串形式呈现
 // 后续参与计算时再转化为数值形式
 const current = {
-  value: "1.",
+  value: "0",
 };
 
 const currentProxy = new Proxy(current, {
@@ -154,8 +175,14 @@ const calcScreenCurrentDom = document.querySelector(".calc-screen-current");
 renderCalcProcess();
 renderCalcCurrent();
 
+/**
+ * 屏幕上的计算过程会在两种情况下渲染：
+ * 1.初始化
+ * 2.当前计算过程列表超过两个元素时
+ */
+
 function renderCalcProcess() {
-  const processStr = processList.join("   ");
+  const processStr = processList.map((item) => item.val).join("   ");
   calcScreenProcessDom.textContent = processStr;
 }
 
@@ -177,7 +204,7 @@ acDealDom.addEventListener("click", (e) => {
 
 const delDealDom = document.querySelector(".del");
 delDealDom.addEventListener("click", (e) => {
-  currentProxy.value = "0";
+  currentProxy.value = currentProxy.value.slice(0, -1);
 });
 
 const notDealDom = document.querySelector(".not");
@@ -190,6 +217,13 @@ const equalDealDom = document.querySelector(".equal");
 // 数字按钮的输入控制
 const calcManiNumDomList = document.querySelectorAll(".calc-mani-num");
 
+/**
+ * 当前数字的维护问题：
+ * 屏幕中的current显示的可能是当前正在输入的数值，也可能是上次输入的数值（被操作符隔开的上次输入的确定值）
+ * 如果是当前正在输入的值，则在屏幕显示的数值上做修改
+ * 如果是上次输入的数值，则要将屏幕清空，从头开始维护数值
+ */
+
 calcManiNumDomList.forEach((num) => {
   num.addEventListener("click", (e) => {
     console.log(currentProxy.value + num.textContent);
@@ -198,7 +232,7 @@ calcManiNumDomList.forEach((num) => {
      * 2.如果目前是整数，则允许添加小数点
      * 3.其余情况（非整数），则通过parseFloat保证数值合法
      */
-    if (currentProxy.value === "0") {
+    if (currentProxy.value === "0" || processList.at(-1).type !== "num") {
       currentProxy.value = num.textContent;
     } else if (currentProxy.value % 1 === 0) {
       currentProxy.value = currentProxy.value + num.textContent;
@@ -207,8 +241,40 @@ calcManiNumDomList.forEach((num) => {
         parseFloat(currentProxy.value + num.textContent),
       );
     }
+    computeProcessManage(currentProxy.value, "num");
   });
 });
+
+// 计算按钮的输入
+const calcManiComputeDomList = document.querySelectorAll(".calc-mani-compute");
+
+calcManiComputeDomList.forEach((compute) => {
+  compute.addEventListener("click", (e) => {
+    computeProcessManage(compute.textContent, "compute");
+  });
+});
+
+/**
+ * 计算过程的管理
+ * 1.如果计算过程列表为空，或已存在“=”，则直接清空新建插入
+ * 2.如果计算过程列表的最后一项为当前输入的相同类型，则进行替换
+ * 3.如果计算过程列表的最后一项不为当前输入的相同类型，则插入
+ */
+
+function computeProcessManage(item, type) {
+  if (
+    (processList.length === 0 && type !== "compute") ||
+    processList.map((item) => item.val).includes("=")
+  ) {
+    processListProxy.length = 0;
+    processListProxy.push({ val: item, type });
+  } else if (processList.at(-1).type === type) {
+    processListProxy.pop();
+    processListProxy.push({ val: item, type });
+  } else if (processList.at(-1).type !== type) {
+    processListProxy.push({ val: item, type });
+  }
+}
 
 //控制计算历史卡片的显示
 const calcHistoryDom = document.querySelector(".calc-history");
