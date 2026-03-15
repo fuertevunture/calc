@@ -2,6 +2,15 @@
  * 因为svg元素内部标签过多\过复杂,影响html文件的结构清晰性
  * 将svg元素放到js中集中管理，以元素组件形式插入到html中
  */
+
+/**
+ * 这里涉及的页面元素有:
+ * 1.标题图标
+ * 2.历史记录开关
+ * 3.主题样式按钮
+ * 4.历史记录清除按钮
+ */
+
 const calcMenuTitleDom = document.querySelector(".calc-menu-title");
 const calcMenuTitleSvgDom = document.createElement("template");
 calcMenuTitleSvgDom.innerHTML = `<svg t="1772889496227" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="37974" width="32" height="32"><path d="M0 0m0 0l1024 0q0 0 0 0l0 1024q0 0 0 0l-1024 0q0 0 0 0l0-1024q0 0 0 0Z" fill="#FFFFFF" p-id="37975"></path><path d="M102.4 30.72m133.12 0l552.96 0q133.12 0 133.12 133.12l0 675.84q0 133.12-133.12 133.12l-552.96 0q-133.12 0-133.12-133.12l0-675.84q0-133.12 133.12-133.12Z" fill="#4A5795" p-id="37976"></path><path d="M512 972.8h276.48c73.52 0 133.12-59.6 133.12-133.12V163.84c0-73.52-59.6-133.12-133.12-133.12H512V972.8z" fill="#333E73" p-id="37977"></path><path d="M215.04 130.941m51.2 0l491.52 0q51.2 0 51.2 51.2l0 67.976q0 51.2-51.2 51.2l-491.52 0q-51.2 0-51.2-51.2l0-67.976q0-51.2 51.2-51.2Z" fill="#5E89EF" p-id="37978"></path><path d="M215.04 391.517m51.2 0l174.08 0q51.2 0 51.2 51.2l0 108.065q0 51.2-51.2 51.2l-174.08 0q-51.2 0-51.2-51.2l0-108.065q0-51.2 51.2-51.2Z" fill="#66D888" p-id="37979"></path><path d="M215.04 632.048m51.2 0l174.08 0q51.2 0 51.2 51.2l0 108.065q0 51.2-51.2 51.2l-174.08 0q-51.2 0-51.2-51.2l0-108.065q0-51.2 51.2-51.2Z" fill="#FFBA44" p-id="37980"></path><path d="M532.48 391.517m51.2 0l174.08 0q51.2 0 51.2 51.2l0 348.596q0 51.2-51.2 51.2l-174.08 0q-51.2 0-51.2-51.2l0-348.596q0-51.2 51.2-51.2Z" fill="#FF6666" p-id="37981"></path><path d="M335.2 561.768h31.92v-50.346h49.44v-30.066h-49.44v-50.502H335.2v50.502H286v30.066h49.2v50.346zM296.96 752.312H409.6v-30.066H296.96v30.066zM614.4 591.96h112.64v-30.067H614.4v30.066zM614.4 672.137h112.64V642.07H614.4v30.066z" fill="#FFFFFF" p-id="37982"></path><path d="M562.545 276.03h57.753v-17.694h-16.466v-73.851h-16.097c-6.39 4.055-12.78 6.512-22.61 8.356v13.516h16.835v51.979h-19.415v17.694z m70.41 0h63.406v-18.432h-16.712c-4.178 0-10.445 0.615-14.991 1.23 14.008-14.132 27.525-31.458 27.525-47.187 0-17.449-12.288-28.754-29.983-28.754-13.025 0-21.38 4.547-30.351 14.131l11.92 11.797c4.423-4.67 9.215-8.847 15.482-8.847 7.373 0 11.92 4.546 11.92 12.902 0 13.271-15.36 29.86-38.216 50.627v12.533z m103.956 1.72c18.187 0 33.792-9.584 33.792-26.664 0-11.797-7.495-19.17-17.572-22.242v-0.614c9.708-3.932 14.623-11.06 14.623-20.152 0-16.343-12.41-25.19-31.334-25.19-10.814 0-19.907 4.177-28.385 11.304l11.059 13.394c5.53-4.915 10.199-7.618 16.343-7.618 6.758 0 10.445 3.44 10.445 9.707 0 7.25-4.916 11.92-20.521 11.92v15.482c19.169 0 23.347 4.67 23.347 12.534 0 6.881-5.53 10.445-14.009 10.445-7.127 0-13.516-3.687-19.046-8.847l-10.076 13.762c6.635 7.742 16.834 12.78 31.334 12.78z" fill="#FFFFFF" p-id="37983"></path></svg>`;
@@ -39,9 +48,16 @@ const calcHistoryControlClearSvgDom = document.createElement("template");
 calcHistoryControlClearSvgDom.innerHTML = `<svg t="1772931648518" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="45087" width="24" height="24"><path d="M426.667 384a42.667 42.667 0 0 1 42.666 42.667v426.666a42.667 42.667 0 1 1-85.333 0V426.667A42.667 42.667 0 0 1 426.667 384z m170.666 0A42.667 42.667 0 0 1 640 426.667v426.666a42.667 42.667 0 1 1-85.333 0V426.667A42.667 42.667 0 0 1 597.333 384zM291.243 85.333v85.334h441.514V85.333z m-85.334 85.334V85.333A85.333 85.333 0 0 1 291.243 0h441.514a85.333 85.333 0 0 1 85.334 85.333v85.334h120.576a42.667 42.667 0 1 1 0 85.333H85.333a42.667 42.667 0 0 1 0-85.333z m7.424 170.666A42.667 42.667 0 0 1 256 384v512a42.667 42.667 0 0 0 42.667 42.667h426.666A42.667 42.667 0 0 0 768 896V384a42.667 42.667 0 1 1 85.333 0v512a128 128 0 0 1-128 128H298.667a128 128 0 0 1-128-128V384a42.667 42.667 0 0 1 42.666-42.667z" p-id="45088"></path></svg>`;
 calcHistoryControlClearDom.prepend(calcHistoryControlClearSvgDom.content);
 
-const calcManiDom = document.querySelector(".calc-mani");
-
 // 数据管理
+const processList = ["0", "+", "0", "=", "0"];
+
+const processListProxy = new Proxy(processList, {
+  set(target, prop, value, receiver) {
+    return Reflect.set(...arguments);
+  },
+});
+
+let current = 0;
 
 const numList = [
   ["zero", 0],
@@ -72,6 +88,9 @@ const dealList = [
   ["equal", "="],
 ];
 
+// 键盘的初始化
+const calcManiDom = document.querySelector(".calc-mani");
+
 const maniFragment = document.createDocumentFragment();
 
 numList.forEach((num) => {
@@ -97,7 +116,35 @@ dealList.forEach((deal) => {
 
 calcManiDom.prepend(maniFragment);
 
-//控制计算历史的显示
+// 屏幕数据的初始化
+const calcScreenProcessDom = document.querySelector(".calc-screen-process");
+const calcScreenCurrentDom = document.querySelector(".calc-screen-current");
+
+/**
+ * 计算历史的显示如何处理？
+ * 1.整合为一个字符串，元素中间用空格连接  yes
+ * 2.在flex布局中，逐个塞入元素
+ * 计算历史的变更如何处理？
+ * 1.根据数组直接重新渲染  yes
+ * 2.只修改特定元素
+ * 考虑？
+ * 1.直接重新渲染在开发上更为方便一些
+ * 2.只修改特定位置会不会性能消耗更少
+ */
+
+renderCalcProcess();
+renderCalcCurrent();
+
+function renderCalcProcess() {
+  const processStr = processList.join("  ");
+  calcScreenProcessDom.textContent = processStr;
+}
+
+function renderCalcCurrent() {
+  calcScreenCurrentDom.textContent = String(current);
+}
+
+//控制计算历史卡片的显示
 const calcHistoryDom = document.querySelector(".calc-history");
 
 calcMenuControlHistoryDom.addEventListener("click", (e) => {
