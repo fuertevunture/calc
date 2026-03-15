@@ -64,8 +64,10 @@ const processListProxy = new Proxy(processList, {
  * 对current需要使用代理，因其不是对象，故包装成一个对象再使用
  */
 
+// 因current需要显示小数状态，所以要以字符串形式呈现
+// 后续参与计算时再转化为数值形式
 const current = {
-  value: 1,
+  value: "1.",
 };
 
 const currentProxy = new Proxy(current, {
@@ -158,7 +160,7 @@ function renderCalcProcess() {
 }
 
 function renderCalcCurrent() {
-  calcScreenCurrentDom.textContent = String(current.value);
+  calcScreenCurrentDom.textContent = current.value;
 }
 
 // 计算操作控制
@@ -169,23 +171,44 @@ const acDealDom = document.querySelector(".ac");
 acDealDom.addEventListener("click", (e) => {
   // 采用控制数组长度的方式清空
   processListProxy.length = 0;
-  currentProxy.value = 0;
+  currentProxy.value = "0";
   console.log(currentProxy.value);
 });
 
 const delDealDom = document.querySelector(".del");
-
 delDealDom.addEventListener("click", (e) => {
-  currentProxy.value = 0;
+  currentProxy.value = "0";
 });
 
 const notDealDom = document.querySelector(".not");
-
 notDealDom.addEventListener("click", (e) => {
   currentProxy.value = -currentProxy.value;
 });
 
 const equalDealDom = document.querySelector(".equal");
+
+// 数字按钮的输入控制
+const calcManiNumDomList = document.querySelectorAll(".calc-mani-num");
+
+calcManiNumDomList.forEach((num) => {
+  num.addEventListener("click", (e) => {
+    console.log(currentProxy.value + num.textContent);
+    /**
+     * 1.如果目前是0，则直接替换
+     * 2.如果目前是整数，则允许添加小数点
+     * 3.其余情况（非整数），则通过parseFloat保证数值合法
+     */
+    if (currentProxy.value === "0") {
+      currentProxy.value = num.textContent;
+    } else if (currentProxy.value % 1 === 0) {
+      currentProxy.value = currentProxy.value + num.textContent;
+    } else {
+      currentProxy.value = String(
+        parseFloat(currentProxy.value + num.textContent),
+      );
+    }
+  });
+});
 
 //控制计算历史卡片的显示
 const calcHistoryDom = document.querySelector(".calc-history");

@@ -256,6 +256,10 @@ body {
   background: #fff4f0;
   box-shadow: 1px 3px 4px 1px #ddd;
 }
+.equal {
+  color: white;
+  background: #4361ee;
+}
 .calc-history-control {
   display: flex;
   flex-direction: row;
