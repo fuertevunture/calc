@@ -64,7 +64,7 @@ const processList = [
   },
   {
     val: "=",
-    type: "compute",
+    type: "deal",
   },
   {
     val: "0",
@@ -116,7 +116,7 @@ const numList = [
 const computeList = [
   ["percent", "%"],
   ["divide", "/"],
-  ["multiply", "x"],
+  ["multiply", "*"],
   ["subtract", "-"],
   ["add", "+"],
 ];
@@ -212,7 +212,33 @@ notDealDom.addEventListener("click", (e) => {
   currentProxy.value = -currentProxy.value;
 });
 
+/**
+ * “=”结果运算符的效果
+ *  使用结果运算符，即意味着上一次计算已经结束，computeProcess需要完结
+ *  而上一次计算的结果，可以作为下一次计算的起点
+ */
+
+/**
+ * 计算式的更新时机
+ * 使用结果运算符后，一个完整的计算式已经完成
+ * 计算过程和当前数值的更新，是在使用“=”时进行，还是等下一次计算式开始时进行
+ * 使用“=”时进行：
+ *  1.清空process列表，只保留结果值，但不更新屏幕显示
+ *  2.将结果值赋给current
+ * 下一次计算开始时进行：
+ *  1.每一次输入检测计算过程process列表是否已经存在“=”
+ *  2.如果存在就清空+把结果当成起点
+ */
+
 const equalDealDom = document.querySelector(".equal");
+
+equalDealDom.addEventListener("click", (e) => {
+  const computeCommand = processList.map((item) => item.val).join(" ");
+  // 利用eval执行计算过程
+  eval("currentProxy.value =" + computeCommand);
+  computeProcessManage("=", "deal");
+  computeProcessManage(String(currentProxy.value), "num");
+});
 
 // 数字按钮的输入控制
 const calcManiNumDomList = document.querySelectorAll(".calc-mani-num");
@@ -226,7 +252,6 @@ const calcManiNumDomList = document.querySelectorAll(".calc-mani-num");
 
 calcManiNumDomList.forEach((num) => {
   num.addEventListener("click", (e) => {
-    console.log(currentProxy.value + num.textContent);
     /**
      * 1.如果目前是0，则直接替换
      * 2.如果目前是整数，则允许添加小数点
