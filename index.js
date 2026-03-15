@@ -53,11 +53,28 @@ const processList = ["0", "+", "0", "=", "0"];
 
 const processListProxy = new Proxy(processList, {
   set(target, prop, value, receiver) {
-    return Reflect.set(...arguments);
+    Reflect.set(...arguments);
+    renderCalcProcess();
+    return true;
   },
 });
 
-let current = 0;
+/**
+ * let current  = 0
+ * 对current需要使用代理，因其不是对象，故包装成一个对象再使用
+ */
+
+const current = {
+  value: 1,
+};
+
+const currentProxy = new Proxy(current, {
+  set(target, prop, value, receiver) {
+    Reflect.set(...arguments);
+    renderCalcCurrent();
+    return true;
+  },
+});
 
 const numList = [
   ["zero", 0],
@@ -136,13 +153,39 @@ renderCalcProcess();
 renderCalcCurrent();
 
 function renderCalcProcess() {
-  const processStr = processList.join("  ");
+  const processStr = processList.join("   ");
   calcScreenProcessDom.textContent = processStr;
 }
 
 function renderCalcCurrent() {
-  calcScreenCurrentDom.textContent = String(current);
+  calcScreenCurrentDom.textContent = String(current.value);
 }
+
+// 计算操作控制
+
+// 特定操作部分
+const acDealDom = document.querySelector(".ac");
+
+acDealDom.addEventListener("click", (e) => {
+  // 采用控制数组长度的方式清空
+  processListProxy.length = 0;
+  currentProxy.value = 0;
+  console.log(currentProxy.value);
+});
+
+const delDealDom = document.querySelector(".del");
+
+delDealDom.addEventListener("click", (e) => {
+  currentProxy.value = 0;
+});
+
+const notDealDom = document.querySelector(".not");
+
+notDealDom.addEventListener("click", (e) => {
+  currentProxy.value = -currentProxy.value;
+});
+
+const equalDealDom = document.querySelector(".equal");
 
 //控制计算历史卡片的显示
 const calcHistoryDom = document.querySelector(".calc-history");
